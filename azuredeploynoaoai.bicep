@@ -49,7 +49,7 @@ param openAiCompletionsModelDeploymentName string
 param openAiEmbeddingsDeploymentName string
 
 @description('Git repository URL for the application source. This defaults to the [`Azure/Vector-Search-Ai-Assistant`](https://github.com/Azure/Vector-Search-AI-Assistant-MongoDBvCore.git) repository.')
-param appGitRepository string = 'https://github.com/Azure/Vector-Search-AI-Assistant-MongoDBvCore.git'
+param appGitRepository string = 'https://github.com/trustnaga/Vector-Search-AI-Assistant-MongoDBvCore.git'
 
 @description('Git repository branch for the application source. This defaults to the [**main** branch of the `Azure/Vector-Search-Ai-Assistant-MongoDBvCore`](https://github.com/Azure/Vector-Search-AI-Assistant-MongoDBvCore/tree/main) repository.')
 param appGetRepositoryBranch string = 'main'
@@ -159,6 +159,7 @@ resource functionStorage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   sku: {
     name: 'Standard_LRS'
   }
+  publicNetworkAccess: 'Disabled'
 }
 
 resource appServiceFunction 'Microsoft.Web/sites@2022-03-01' = {
