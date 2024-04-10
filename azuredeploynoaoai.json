@@ -222,7 +222,8 @@
       "kind": "Storage",
       "sku": {
         "name": "Standard_LRS"
-      }
+      },
+      "publicNetworkAccess": "Disabled"
     },
     {
       "type": "Microsoft.Web/sites",
