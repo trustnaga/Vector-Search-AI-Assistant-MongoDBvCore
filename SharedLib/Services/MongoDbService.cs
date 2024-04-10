@@ -66,6 +66,7 @@ public class MongoDbService
         CreateVectorIndexIfNotExists("products", _vectorIndexType);
         CreateVectorIndexIfNotExists("customers", _vectorIndexType);
         CreateVectorIndexIfNotExists("salesOrders", _vectorIndexType);
+        CreateVectorIndexIfNotExists("alerts", _vectorIndexType);
     }
 
     /// <summary>
