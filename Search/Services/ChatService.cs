@@ -14,13 +14,13 @@ public class ChatService
     /// </summary>
     private static List<Session> _sessions = new();
 
-    private readonly OpenAiService _openAiService;
+    private readonly StorageService _openAiService;
     private readonly MongoDbService _mongoDbService;
     private readonly int _maxConversationTokens;
     private readonly int _maxCompletionTokens;
     private readonly ILogger _logger;
 
-    public ChatService(OpenAiService openAiService, MongoDbService mongoDbService, ILogger logger)
+    public ChatService(StorageService openAiService, MongoDbService mongoDbService, ILogger logger)
     {
 
         _openAiService = openAiService;

@@ -14,7 +14,7 @@ namespace SharedLib.Options
 
         public string? VectorIndexType { get; set; }
 
-        public OpenAiService? OpenAiService { get; set; }
+        public StorageService? OpenAiService { get; set; }
 
         public ILogger? Logger { get; set; }
 

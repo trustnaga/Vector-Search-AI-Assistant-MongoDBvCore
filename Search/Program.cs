@@ -48,7 +48,7 @@ static class ProgramExtensions
     public static void RegisterServices(this IServiceCollection services)
     {
         
-        services.AddSingleton<OpenAiService, OpenAiService>((provider) =>
+        services.AddSingleton<StorageService, StorageService>((provider) =>
         {
             var openAiOptions = provider.GetRequiredService<IOptions<OpenAi>>();
             if (openAiOptions is null)
@@ -57,7 +57,7 @@ static class ProgramExtensions
             }
             else
             {
-                return new OpenAiService(
+                return new StorageService(
                     endpoint: openAiOptions.Value?.Endpoint ?? String.Empty,
                     key: openAiOptions.Value?.Key ?? String.Empty,
                     embeddingsDeployment: openAiOptions.Value?.EmbeddingsDeployment ?? String.Empty,
@@ -65,7 +65,7 @@ static class ProgramExtensions
                     maxConversationTokens: openAiOptions.Value?.MaxConversationTokens ?? String.Empty,
                     maxCompletionTokens: openAiOptions.Value?.MaxCompletionTokens ?? String.Empty,
                     maxEmbeddingTokens: openAiOptions.Value?.MaxEmbeddingTokens ?? String.Empty,                                        
-                    logger: provider.GetRequiredService<ILogger<OpenAiService>>()
+                    logger: provider.GetRequiredService<ILogger<StorageService>>()
                 );
             }
         });
@@ -85,7 +85,7 @@ static class ProgramExtensions
                     collectionNames: mongoDbOptions.Value?.CollectionNames ?? String.Empty,
                     maxVectorSearchResults: mongoDbOptions.Value?.MaxVectorSearchResults ?? String.Empty,
                     vectorIndexType: mongoDbOptions.Value?.VectorIndexType ?? String.Empty,
-                    openAiService: provider.GetRequiredService<OpenAiService>(),
+                    openAiService: provider.GetRequiredService<StorageService>(),
                     logger: provider.GetRequiredService<ILogger<MongoDbService>>()
                 );
             }
@@ -101,7 +101,7 @@ static class ProgramExtensions
             {
                 return new ChatService(
                     mongoDbService: provider.GetRequiredService<MongoDbService>(),
-                    openAiService: provider.GetRequiredService<OpenAiService>(),
+                    openAiService: provider.GetRequiredService<StorageService>(),
                     logger: provider.GetRequiredService<ILogger<ChatService>>()
                 );
             }

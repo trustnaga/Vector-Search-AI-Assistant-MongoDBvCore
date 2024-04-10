@@ -8,6 +8,7 @@ using SharedLib.Services;
 
 
 
+
     var host = new HostBuilder()
         .ConfigureFunctionsWorkerDefaults(builder =>
         {
@@ -27,6 +28,11 @@ using SharedLib.Services;
                 .Configure<IConfiguration>((settings, configuration) =>
                 {
                     configuration.GetSection(nameof(MongoDb)).Bind(settings);
+                });
+            builder.Services.AddOptions<DataStorage>()
+                .Configure<IConfiguration>((settings, configuration) =>
+                {
+                    configuration.GetSection(nameof(DataStorage)).Bind(settings);
                 });
 
         })

@@ -5,6 +5,9 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using SharedLib.Services;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using SharedLib.Options;
 
 
 namespace Vectorize
@@ -15,11 +18,15 @@ namespace Vectorize
         private readonly MongoDbService _mongo;
         private readonly ILogger _logger;
 
-        public IngestAndVectorize(MongoDbService mongo, ILoggerFactory loggerFactory)
+         private readonly DataStorage _settings;
+
+        public IngestAndVectorize(MongoDbService mongo, ILoggerFactory loggerFactory, IOptions<DataStorage> dataStorageOptions)
         {
             _mongo = mongo;
             _logger = loggerFactory.CreateLogger<IngestAndVectorize>();
+            _settings = dataStorageOptions.Value;
         }
+        
 
         [Function("IngestAndVectorize")]
         public async Task<HttpResponseData> Run(
@@ -55,11 +62,13 @@ namespace Vectorize
 
             try
             {
-                BlobContainerClient blobContainerClient = new BlobContainerClient(new Uri("https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-mongo-vcore/"));
+                BlobServiceClient blobServiceClient = new BlobServiceClient(_settings.ConnectionUrl);
+                BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(_settings.ContainerName);
+                //BlobContainerClient blobContainerClient = new BlobContainerClient(new Uri("https://cosmosdbcosmicworks.blob.core.windows.net/cosmic-works-mongo-vcore/"));
 
-                //hard-coded here.  In a real-world scenario, you would want to dynamically get the list of blobs in the container and iterate through them.
+                //hard-coded here.  In a real-world scenario, you would IFunctionsHostBuilder want to dynamically get the list of blobs in the container and iterate through them.
                 //as well as drive all of the schema and meta-data from a configuration file.
-                List<string> blobIds = new List<string>() { "products", "customers", "salesOrders" };
+                List<string> blobIds = new List<string>() { "products", "customers", "salesOrders", "alerts" };
 
 
                 foreach(string blobId in blobIds)

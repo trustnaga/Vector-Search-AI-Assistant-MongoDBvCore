@@ -31,6 +31,11 @@ namespace Vectorize
                 {
                     configuration.GetSection(nameof(MongoDb)).Bind(settings);
                 });
+            builder.Services.AddOptions<DataStorage>()
+                .Configure<IConfiguration>((settings, configuration) =>
+                {
+                    configuration.GetSection(nameof(DataStorage)).Bind(settings);
+                });
 
 
             builder.Services.AddSingleton<OpenAiService, OpenAiService>((provider) =>
